@@ -1,0 +1,10 @@
+{
+  "name": "tranc-gym-ssr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SSR-style Node server for the Tranc Gym web app.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
