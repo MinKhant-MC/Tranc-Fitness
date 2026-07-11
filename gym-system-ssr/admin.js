@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   'use strict';
 
   var api = window.GYM_API || {};
@@ -665,6 +665,83 @@
     }).join('');
   }
 
+  function renderNewSubscriptionsChart(payments) {
+    var container = byId('newSubscriptionsChart');
+    var labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var now = new Date();
+    var year = now.getFullYear();
+    var currentIndex = now.getMonth();
+    var counts = labels.map(function () { return 0; });
+    var max = 1;
+    var points;
+    var linePoints;
+    var areaPoints;
+    var width = 720;
+    var height = 150;
+    var left = 22;
+    var top = 12;
+    var chartWidth = width - 44;
+    var chartHeight = height - 34;
+    var total = 0;
+
+    if (!container) {
+      return;
+    }
+
+    normalizeList(payments).forEach(function (payment) {
+      var type = String(payment.payment_type || '').toLowerCase();
+      var rawDate = payment.paid_at || payment.start_date;
+      var date = rawDate ? new Date(String(rawDate).replace(' ', 'T')) : null;
+      if (type !== 'registration' || !date || Number.isNaN(date.getTime()) || date.getFullYear() !== year) {
+        return;
+      }
+      counts[date.getMonth()] += 1;
+      total += 1;
+    });
+
+    counts.forEach(function (count) {
+      max = Math.max(max, count);
+    });
+
+    setText('newSubscriptionTotal', formatNumber(total));
+
+    points = counts.map(function (count, index) {
+      var x = left + (chartWidth * (index / 11));
+      var y = top + chartHeight - ((count / max) * chartHeight);
+      return { x: x, y: y, count: count, index: index };
+    });
+    linePoints = points.map(function (point) {
+      return point.x.toFixed(1) + ',' + point.y.toFixed(1);
+    }).join(' ');
+    areaPoints = left + ',' + (top + chartHeight) + ' ' + linePoints + ' ' + (left + chartWidth) + ',' + (top + chartHeight);
+
+    container.innerHTML =
+      '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="New subscriptions chart">' +
+        '<defs>' +
+          '<linearGradient id="subscriptionStroke" x1="0" x2="1" y1="0" y2="0">' +
+            '<stop offset="0%" stop-color="#f7d76c"/><stop offset="100%" stop-color="#c17908"/>' +
+          '</linearGradient>' +
+          '<linearGradient id="subscriptionFill" x1="0" x2="0" y1="0" y2="1">' +
+            '<stop offset="0%" stop-color="#f7d76c" stop-opacity="0.35"/><stop offset="100%" stop-color="#f7d76c" stop-opacity="0"/>' +
+          '</linearGradient>' +
+        '</defs>' +
+        [0, 1, 2, 3].map(function (line) {
+          var y = top + (chartHeight * (line / 3));
+          return '<line class="subscription-grid-line" x1="' + left + '" x2="' + (left + chartWidth) + '" y1="' + y.toFixed(1) + '" y2="' + y.toFixed(1) + '"></line>';
+        }).join('') +
+        '<polygon class="subscription-line-fill" points="' + areaPoints + '"></polygon>' +
+        '<polyline class="subscription-line-path" points="' + linePoints + '"></polyline>' +
+        points.map(function (point) {
+          return '<circle class="subscription-dot' + (point.index === currentIndex ? ' is-current' : '') + '" cx="' + point.x.toFixed(1) + '" cy="' + point.y.toFixed(1) + '" r="' + (point.index === currentIndex ? 6 : 4) + '">' +
+            '<title>' + labels[point.index] + ': ' + point.count + '</title>' +
+          '</circle>';
+        }).join('') +
+      '</svg>' +
+      '<div class="subscription-labels">' + labels.map(function (label, index) {
+        return '<span class="' + (index === currentIndex ? 'is-current' : '') + '">' + label + '</span>';
+      }).join('') + '</div>';
+  }
+
   function renderSearchResults(list, query) {
     renderMemberCards('searchResults', list, query ? t('admin.no_members') : t('admin.search_text'), query);
   }
@@ -683,6 +760,7 @@
     setText('pendingCount', formatNumber(normalized.stats.pending_count));
     setText('presentToday', formatNumber(normalized.stats.present_today));
     setText('expiringCount', formatNumber(normalized.stats.expiring_soon));
+    renderNewSubscriptionsChart(normalized.payment_history);
     renderMonthlyIncomeChart(normalized.monthly_income);
     renderPaymentHistory(normalized.payment_history);
     renderNotifications(normalized.notifications);
@@ -789,6 +867,7 @@
     setFieldValue('editExtensionFee', '');
     setFieldValue('editTrainer', member.personal_trainer || 'No');
     setFieldValue('editGoalNote', member.goal_note);
+    setFieldValue('editCurrentPassword', member.password_plain || '');
     setFieldValue('editNewPassword', '');
     if (byId('editMemberPaymentHistory')) {
       byId('editMemberPaymentHistory').innerHTML = paymentMiniHtml(member.member_id);
