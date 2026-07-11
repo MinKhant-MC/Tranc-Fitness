@@ -674,8 +674,8 @@
     var counts = labels.map(function () { return 0; });
     var max = 1;
     var points;
-    var linePoints;
-    var areaPoints;
+    var linePath;
+    var areaPath;
     var width = 720;
     var height = 150;
     var left = 22;
@@ -686,6 +686,38 @@
 
     if (!container) {
       return;
+    }
+
+    function curvedPathFromPoints(pathPoints) {
+      if (!pathPoints.length) {
+        return '';
+      }
+      if (pathPoints.length === 1) {
+        return 'M ' + pathPoints[0].x.toFixed(1) + ' ' + pathPoints[0].y.toFixed(1);
+      }
+      return pathPoints.reduce(function (path, point, index) {
+        var prev = pathPoints[index - 1];
+        var next = pathPoints[index + 1] || point;
+        var prevPrev = pathPoints[index - 2] || prev || point;
+        var controlOneX;
+        var controlOneY;
+        var controlTwoX;
+        var controlTwoY;
+
+        if (index === 0) {
+          return 'M ' + point.x.toFixed(1) + ' ' + point.y.toFixed(1);
+        }
+
+        controlOneX = prev.x + ((point.x - prevPrev.x) / 6);
+        controlOneY = prev.y + ((point.y - prevPrev.y) / 6);
+        controlTwoX = point.x - ((next.x - prev.x) / 6);
+        controlTwoY = point.y - ((next.y - prev.y) / 6);
+
+        return path + ' C ' +
+          controlOneX.toFixed(1) + ' ' + controlOneY.toFixed(1) + ', ' +
+          controlTwoX.toFixed(1) + ' ' + controlTwoY.toFixed(1) + ', ' +
+          point.x.toFixed(1) + ' ' + point.y.toFixed(1);
+      }, '');
     }
 
     normalizeList(payments).forEach(function (payment) {
@@ -710,10 +742,10 @@
       var y = top + chartHeight - ((count / max) * chartHeight);
       return { x: x, y: y, count: count, index: index };
     });
-    linePoints = points.map(function (point) {
-      return point.x.toFixed(1) + ',' + point.y.toFixed(1);
-    }).join(' ');
-    areaPoints = left + ',' + (top + chartHeight) + ' ' + linePoints + ' ' + (left + chartWidth) + ',' + (top + chartHeight);
+    linePath = curvedPathFromPoints(points);
+    areaPath = 'M ' + left + ' ' + (top + chartHeight) + ' ' +
+      linePath.replace(/^M\s+[\d.-]+\s+[\d.-]+/, 'L ' + points[0].x.toFixed(1) + ' ' + points[0].y.toFixed(1)) +
+      ' L ' + (left + chartWidth) + ' ' + (top + chartHeight) + ' Z';
 
     container.innerHTML =
       '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="New subscriptions chart">' +
@@ -729,8 +761,8 @@
           var y = top + (chartHeight * (line / 3));
           return '<line class="subscription-grid-line" x1="' + left + '" x2="' + (left + chartWidth) + '" y1="' + y.toFixed(1) + '" y2="' + y.toFixed(1) + '"></line>';
         }).join('') +
-        '<polygon class="subscription-line-fill" points="' + areaPoints + '"></polygon>' +
-        '<polyline class="subscription-line-path" points="' + linePoints + '"></polyline>' +
+        '<path class="subscription-line-fill" d="' + areaPath + '"></path>' +
+        '<path class="subscription-line-path" d="' + linePath + '"></path>' +
         points.map(function (point) {
           return '<circle class="subscription-dot' + (point.index === currentIndex ? ' is-current' : '') + '" cx="' + point.x.toFixed(1) + '" cy="' + point.y.toFixed(1) + '" r="' + (point.index === currentIndex ? 6 : 4) + '">' +
             '<title>' + labels[point.index] + ': ' + point.count + '</title>' +
@@ -868,6 +900,9 @@
     setFieldValue('editTrainer', member.personal_trainer || 'No');
     setFieldValue('editGoalNote', member.goal_note);
     setFieldValue('editCurrentPassword', member.password_plain || '');
+    if (byId('editCurrentPassword')) {
+      byId('editCurrentPassword').placeholder = member.password_plain ? '' : t('admin.current_password_missing');
+    }
     setFieldValue('editNewPassword', '');
     if (byId('editMemberPaymentHistory')) {
       byId('editMemberPaymentHistory').innerHTML = paymentMiniHtml(member.member_id);
