@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   'use strict';
 
   var STORAGE_KEY = 'gym_language';
@@ -171,6 +171,9 @@
         month_fee: 'This Month',
         year_fee: 'This Year',
         no_income: 'No membership fees recorded yet.',
+        new_subscriptions_title: 'New Subscriptions',
+        new_subscriptions_text: 'New approved memberships by month',
+        this_year: 'This Year',
         payment_history_title: 'Membership Fee History',
         payment_history_text: 'Registration and extension payments by member.',
         no_payments: 'No fee records yet.',
@@ -225,6 +228,8 @@
         member_fee_total: 'Total Membership Fee',
         extend_months: 'Extend Membership',
         extension_fee: 'Extension Fee',
+        current_password: 'Current Password',
+        current_password_note: 'Only available for new registrations or passwords changed by admin.',
         new_password_optional: 'New Password (optional)',
         saving_member: 'Saving member...',
         member_saved: 'Member information saved.',
@@ -471,6 +476,9 @@
   DICTIONARIES.my.admin.month_fee = 'ဒီလ';
   DICTIONARIES.my.admin.year_fee = 'ဒီနှစ်';
   DICTIONARIES.my.admin.no_income = 'Membership fee မရှိသေးပါ။';
+  DICTIONARIES.my.admin.new_subscriptions_title = 'Member အသစ်များ';
+  DICTIONARIES.my.admin.new_subscriptions_text = 'လအလိုက် အတည်ပြုပြီး member အသစ်များ';
+  DICTIONARIES.my.admin.this_year = 'ဒီနှစ်';
   DICTIONARIES.my.admin.payment_history_title = 'ငွေပေးချေမှု မှတ်တမ်း';
   DICTIONARIES.my.admin.payment_history_text = 'စာရင်းသွင်းချိန်နှင့် သက်တမ်းတိုးချိန် ပေးထားသော fee များ';
   DICTIONARIES.my.admin.no_payments = 'ငွေပေးချေမှု မှတ်တမ်း မရှိသေးပါ။';
@@ -480,6 +488,8 @@
   DICTIONARIES.my.admin.no_list_items = 'ပြရန် မှတ်တမ်း မရှိသေးပါ။';
   DICTIONARIES.my.admin.member_fee_total = 'စုစုပေါင်း Membership Fee';
   DICTIONARIES.my.admin.extension_fee = 'သက်တမ်းတိုး Fee';
+  DICTIONARIES.my.admin.current_password = 'လက်ရှိ စကားဝှက်';
+  DICTIONARIES.my.admin.current_password_note = 'အသစ်စာရင်းသွင်းထားသူများ သို့မဟုတ် Admin ပြောင်းထားသော စကားဝှက်များကိုသာ ကြည့်နိုင်ပါသည်။';
   DICTIONARIES.my.admin.remove_member = 'Member ဖယ်ရှားရန်';
   DICTIONARIES.my.admin.removing_member = 'Member ဖယ်ရှားနေပါသည်...';
   DICTIONARIES.my.admin.member_removed = 'Member ဖယ်ရှားပြီးပါပြီ။';
