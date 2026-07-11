@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -67,6 +67,20 @@
           <span data-i18n="admin.expiring_count">Expiring Soon</span>
           <strong id="expiringCount">0</strong>
         </article>
+      </section>
+
+      <section class="glass-panel subscription-trend-panel">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="admin.new_subscriptions_title">New Subscriptions</h2>
+            <p class="section-copy" data-i18n="admin.new_subscriptions_text">New approved memberships by month</p>
+          </div>
+          <div class="weekly-total-pill trend-total-pill">
+            <span data-i18n="admin.this_year">This Year</span>
+            <strong id="newSubscriptionTotal">0</strong>
+          </div>
+        </div>
+        <div id="newSubscriptionsChart" class="subscription-line-chart"></div>
       </section>
 
       <section class="glass-panel">
@@ -326,6 +340,17 @@
           <input id="editGoalNote" type="text">
         </div>
         <div class="field field-span-2">
+          <label for="editCurrentPassword" data-i18n="admin.current_password">Current Password</label>
+          <div class="password-field">
+            <input id="editCurrentPassword" type="password" readonly>
+            <button class="password-toggle" type="button" data-toggle-password="editCurrentPassword" aria-label="Show password">
+              <svg class="icon eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <svg class="icon eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 10.6A3 3 0 0 0 12 15a3 3 0 0 0 2.4-4.8"></path><path d="M9.9 5.3A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.1 4.1"></path><path d="M6.1 6.7A17.2 17.2 0 0 0 2 12s3.5 7 10 7a10.9 10.9 0 0 0 4.2-.8"></path></svg>
+            </button>
+          </div>
+          <p class="info-note" data-i18n="admin.current_password_note">Only available for new registrations or passwords changed by admin.</p>
+        </div>
+        <div class="field field-span-2">
           <label for="editNewPassword" data-i18n="admin.new_password_optional">New Password (optional)</label>
           <div class="password-field">
             <input id="editNewPassword" type="password" minlength="4" autocomplete="new-password">
@@ -360,5 +385,4 @@
   <script src="pwa.js"></script>
 </body>
 </html>
-
 
