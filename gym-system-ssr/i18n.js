@@ -61,6 +61,7 @@
         height: 'Height',
         start_date: 'Start Date',
         months: 'How Many Months',
+        end_date: 'End Date',
         membership_fee: 'Membership Fee',
         personal_trainer: 'Personal Trainer',
         trainer_no: 'No',
@@ -230,6 +231,7 @@
         extension_fee: 'Extension Fee',
         current_password: 'Current Password',
         current_password_note: 'Only available for new registrations or passwords changed by admin.',
+        current_password_missing: 'Old password was saved as a hash. Set a new password below.',
         new_password_optional: 'New Password (optional)',
         saving_member: 'Saving member...',
         member_saved: 'Member information saved.',
@@ -318,6 +320,7 @@
         height: 'အရပ် (cm)',
         start_date: 'စတင်မည့်ရက်',
         months: 'ကစားမည့် လအရေအတွက်',
+        end_date: 'သက်တမ်းကုန်မည့်ရက်',
         personal_trainer: 'Personal Trainer',
         trainer_no: 'မလိုပါ',
         trainer_yes: 'Yes',
@@ -490,6 +493,7 @@
   DICTIONARIES.my.admin.extension_fee = 'သက်တမ်းတိုး Fee';
   DICTIONARIES.my.admin.current_password = 'လက်ရှိ စကားဝှက်';
   DICTIONARIES.my.admin.current_password_note = 'အသစ်စာရင်းသွင်းထားသူများ သို့မဟုတ် Admin ပြောင်းထားသော စကားဝှက်များကိုသာ ကြည့်နိုင်ပါသည်။';
+  DICTIONARIES.my.admin.current_password_missing = 'စကားဝှက်ဟောင်းကို hash အနေနဲ့ သိမ်းထားတာကြောင့် မမြင်နိုင်ပါ။ အောက်မှာ စကားဝှက်အသစ် ပြောင်းနိုင်ပါတယ်။';
   DICTIONARIES.my.admin.remove_member = 'Member ဖယ်ရှားရန်';
   DICTIONARIES.my.admin.removing_member = 'Member ဖယ်ရှားနေပါသည်...';
   DICTIONARIES.my.admin.member_removed = 'Member ဖယ်ရှားပြီးပါပြီ။';
