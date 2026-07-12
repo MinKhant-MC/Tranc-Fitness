@@ -72,6 +72,7 @@
       height_cm: convertHeightToCm(byId('heightCm').value, byId('heightUnit').value),
       start_date: byId('startDate').value,
       membership_months: byId('membershipMonths').value,
+      end_date: byId('endDate') ? byId('endDate').value : '',
       membership_fee: byId('incomeAmount').value,
       personal_trainer: byId('personalTrainer').value,
       goal_note: byId('trainerNotes').value.trim(),
